@@ -1,6 +1,11 @@
 spring:
   application:
     name: item-service
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      discovery:
+        server-addr: ${spring.cloud.nacos.server-addr}
 
 server:
   port: 8082
