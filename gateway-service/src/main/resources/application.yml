@@ -6,6 +6,43 @@ spring:
       server-addr: localhost:8848
       discovery:
         server-addr: ${spring.cloud.nacos.server-addr}
+    gateway:
+      routes:
+        - id: user-auth-route
+          uri: lb://user-service
+          predicates:
+            - Path=/api/auth/**
+
+        - id: user-route
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/**
+
+        - id: item-route
+          uri: lb://item-service
+          predicates:
+            - Path=/api/items/**
+
+        - id: search-route
+          uri: lb://item-service
+          predicates:
+            - Path=/api/search/**
+
+        - id: file-route
+          uri: lb://item-service
+          predicates:
+            - Path=/api/files/**
+
+        - id: admin-route
+          uri: lb://admin-service
+          predicates:
+            - Path=/api/admin/**
 
 server:
   port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
