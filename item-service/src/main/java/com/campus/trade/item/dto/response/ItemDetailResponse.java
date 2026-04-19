@@ -11,6 +11,9 @@ public class ItemDetailResponse {
 
     private Long id;
     private Long sellerId;
+    private String sellerNickname;
+    private Integer creditScore;
+
     private String title;
     private String description;
     private BigDecimal price;

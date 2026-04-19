@@ -14,9 +14,11 @@ import com.campus.trade.item.dto.response.MyItemListItemResponse;
 import com.campus.trade.item.entity.Category;
 import com.campus.trade.item.entity.Item;
 import com.campus.trade.item.entity.ItemImage;
+import com.campus.trade.item.entity.SellerUser;
 import com.campus.trade.item.mapper.CategoryMapper;
 import com.campus.trade.item.mapper.ItemImageMapper;
 import com.campus.trade.item.mapper.ItemMapper;
+import com.campus.trade.item.mapper.SellerUserMapper;
 import com.campus.trade.item.service.ItemService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,13 +38,16 @@ public class ItemServiceImpl implements ItemService {
     private final ItemMapper itemMapper;
     private final CategoryMapper categoryMapper;
     private final ItemImageMapper itemImageMapper;
+    private final SellerUserMapper sellerUserMapper;
 
     public ItemServiceImpl(ItemMapper itemMapper,
                            CategoryMapper categoryMapper,
-                           ItemImageMapper itemImageMapper) {
+                           ItemImageMapper itemImageMapper,
+                           SellerUserMapper sellerUserMapper) {
         this.itemMapper = itemMapper;
         this.categoryMapper = categoryMapper;
         this.itemImageMapper = itemImageMapper;
+        this.sellerUserMapper = sellerUserMapper;
     }
 
     @Override
@@ -83,6 +88,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         Category category = item.getCategoryId() == null ? null : categoryMapper.selectById(item.getCategoryId());
+        SellerUser sellerUser = item.getSellerId() == null ? null : sellerUserMapper.selectById(item.getSellerId());
 
         LambdaQueryWrapper<ItemImage> imageQueryWrapper = new LambdaQueryWrapper<>();
         imageQueryWrapper.eq(ItemImage::getItemId, item.getId())
@@ -102,6 +108,9 @@ public class ItemServiceImpl implements ItemService {
         ItemDetailResponse response = new ItemDetailResponse();
         response.setId(item.getId());
         response.setSellerId(item.getSellerId());
+        response.setSellerNickname(sellerUser != null ? sellerUser.getNickname() : "未知");
+        response.setCreditScore(100);
+
         response.setTitle(item.getTitle());
         response.setDescription(item.getDescription());
         response.setPrice(item.getPrice());
