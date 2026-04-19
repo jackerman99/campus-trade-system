@@ -8,8 +8,8 @@ pipeline {
 
     environment {
         PROJECT_NAME = 'campus-trade-system'
-        NODE_HOME = 'D:\\ALL TOOL\\nodejs'
         DIST_DIR = 'build-output'
+        DEPLOY_DIR = 'D:\\campus-trade-deploy\\backend'
     }
 
     stages {
@@ -47,11 +47,22 @@ pipeline {
                 '''
             }
         }
+
+        stage('Copy To Deploy Directory') {
+            steps {
+                bat '''
+                if not exist "%DEPLOY_DIR%" mkdir "%DEPLOY_DIR%"
+                del /q "%DEPLOY_DIR%\\*.jar" 2>nul
+                copy build-output\\backend\\*.jar "%DEPLOY_DIR%\\"
+                '''
+            }
+        }
     }
 
     post {
         success {
             archiveArtifacts artifacts: 'build-output/backend/*.jar', fingerprint: true
+            echo 'Build and deploy copy finished successfully.'
         }
         failure {
             echo 'Build failed.'
