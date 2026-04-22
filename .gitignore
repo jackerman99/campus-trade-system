@@ -15,10 +15,15 @@ Thumbs.db
 # Env
 .env
 .env.*
+**/application-local.yml
 
 # Node
 node_modules/
 dist/
+
+# Jenkins / Build Output
+/build-output/
+/campus-trade-deploy/
 
 # Temporary
 tmp/

@@ -1,6 +1,8 @@
 spring:
   application:
     name: item-service
+  profiles:
+    active: local
   cloud:
     nacos:
       server-addr: 127.0.0.1:8848
@@ -22,3 +24,10 @@ server:
 app:
   jwt:
     secret: CampusTradeSystemJwtSecretKeyFor2026Project
+
+ai:
+  enabled: true
+  chat-url: ${AI_CHAT_URL:}
+  api-key: ${AI_API_KEY:}
+  model: ${AI_MODEL:}
+  timeout-seconds: 30
